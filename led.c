@@ -10,7 +10,6 @@ void signal_bit_0() {
 		"rjmp .+0\n\t"
 		"rjmp .+0\n\t"
 		"rjmp .+0\n\t"
-		"nop\n\t"
 		:
 		: "I" (_SFR_IO_ADDR(PORTB)), "I" (PIN_LED)
 	);
@@ -23,7 +22,7 @@ void signal_bit_1() {
 		"nop\n\t"
 		"cbi %0, %1\n\t"
 		"rjmp .+0\n\t"
-		"rjmp .+0\n\t"
+		"nop\n\t"
 		:
 		: "I" (_SFR_IO_ADDR(PORTB)), "I" (PIN_LED)
 	);
