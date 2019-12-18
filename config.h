@@ -1,3 +1,6 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
 #define F_CPU 8000000UL
 
 #define LED_COUNT 50
@@ -16,3 +19,5 @@
 	{26, 37}
 
 #define ISR_PIN PB4
+
+#endif
