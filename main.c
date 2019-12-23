@@ -11,7 +11,10 @@ static struct colour seq[6];
 static bool interrupted = false;
 
 void red_green() {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmemset-elt-size"
 	memset(seq, 0, 2 * sizeof(seq[0]));
+#pragma GCC diagnostic pop
 
 	seq[0].r = 255;
 	seq[1].g = 255;
