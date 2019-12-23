@@ -27,7 +27,7 @@ static unsigned char map_level(unsigned char val, unsigned char min, unsigned ch
 	else if (val >= max)
 		return 255;
 	else
-		return val * 255 / (max - min);
+		return (val - min) * 255 / (max - min);
 }
 
 void eq_read() {
@@ -42,10 +42,12 @@ void eq_read() {
 	}
 }
 
-void eq_decay() {
-	reset();
+void eq_decay(int cycles) {
+	for (int i = 0; i < cycles; ++i) {
+		reset();
 
-	for (int i = 0; i < 7; ++i) {
-		strobe();
+		for (int i = 0; i < 7; ++i) {
+			strobe();
+		}
 	}
 }

@@ -2,7 +2,6 @@
 #include "eq.h"
 #include "led.h"
 
-#include <avr/eeprom.h>
 #include <avr/interrupt.h>
 #include <stdbool.h>
 #include <string.h>
@@ -59,6 +58,8 @@ void rainbow() {
 void sound_reactive() {
 	memset(seq, 0, 3 * sizeof(seq[0]));
 
+	int offset = 0;
+
 	while (1) {
 		if (interrupted == true) {
 			interrupted = false;
@@ -69,17 +70,19 @@ void sound_reactive() {
 
 		seq[0].r = (eq_levels[0] > eq_levels[1]) ? eq_levels[0] : eq_levels[1];
 		unsigned char t = (eq_levels[2] > eq_levels[3]) ? eq_levels[2] : eq_levels[3];
-		seq[1].g = (t > eq_levels[4]) ? t : eq_levels[4];
-		seq[2].b = (eq_levels[5] > eq_levels[6]) ? eq_levels[5] : eq_levels[6];
+		t = (t > eq_levels[4]) ? t : eq_levels[4];
+		seq[1].r = t;
+		seq[1].g = t * 170 / 255;
+		seq[1].b = t * 65 / 255;
+		seq[2].g = (eq_levels[5] > eq_levels[6]) ? eq_levels[5] : eq_levels[6];
 
-		led_signal_sequence(LED_COUNT, seq, 3, 1, 0);
-		for (int i = 0; i < 20; ++i) {
-			eq_decay();
-		}
+		led_signal_sequence(LED_COUNT, seq, 3, 1, offset/60);
+		if (++offset == 180)
+			offset = 0;
+		eq_decay(10);
 		_delay_ms(50);
 	}
 }
-
 
 int main() {
 	DDRB |= (1 << LED_PIN);
